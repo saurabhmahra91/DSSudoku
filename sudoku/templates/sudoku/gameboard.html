@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css"
+        href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.1/css/fontawesome.min.css"
+        integrity="sha384-QYIZto+st3yW+o8+5OHfT6S482Zsvz2WfOzpFSXMF9zqeLcFV0/wlZpMtyFcZALm" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/912ee017a6.js" crossorigin="anonymous"></script>
+    <title>DSSudoku</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+
+        h1,
+        h2,
+        p,
+        li,
+        label {
+            font-family: Poppins;
+        }
+
+        body {
+            background-color: #282828;
+            color: #ebdbb2;
+            max-width: 1500px;
+            margin: 0 auto;
+        }
+
+        .main-board {
+            height: 700px;
+            width: 700px;
+            display: grid;
+            grid-template-columns: repeat(9, 1fr);
+            margin: 0 auto 0 auto;
+        }
+
+        input[type="submit"] {
+            padding: 0.5rem 1.5rem;
+            background-color: #b16286;
+            border: 2px;
+            color: white;
+            font-family: Poppins;
+            font-size: 1rem;
+            border-radius: 25px;
+        }
+
+
+        .cell {
+            width: 1rem;
+            height: 1rem;
+            background-color: #928374;
+            color: #fbf1c7;
+            margin: 0;
+            padding: 25px;
+            border-radius: 56px;
+            font-size: 2rem;
+            caret-color: transparent;
+            cursor: pointer;
+            border: none;
+            transition: .3s ease;
+            font-weight: bold;
+        }
+
+        .cell:focus,
+        .cell:hover {
+            background-color: #98971a;
+        }
+
+        .readonly {
+            color: #282828;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 5fr 1fr;
+            gap: 1rem;
+            padding-top: 2rem;
+        }
+
+        #timer {
+            font-family: 'Poppins';
+            font-size: 2rem;
+            color: #fb4934;
+        }
+
+        #time-label {
+            font-family: Poppins;
+            font-size: .8rem;
+        }
+
+        .right-border {
+            margin-right: 1.8rem;
+        }
+
+        .bottom-border {
+            margin-bottom: 1.8rem;
+        }
+
+        .highlight {
+            background-color: #d5c4a1;
+        }
+
+        .alert {
+            font-family: Poppins;
+            background-color: #98971a;
+            padding: 1rem 2rem;
+            margin: 1rem auto;
+            color: #1d2021;
+            border-radius: 45px;
+        }
+
+        .close {
+            color: #cc241d;
+            font-size: 1rem;
+            padding-right: .5rem;
+        }
+
+        #message {
+            display: block;
+        }
+
+        .disabled {
+            display: none;
+        }
+
+        .username-of-users {
+            color: #83a598;
+            font-family: Poppins;
+            font-size: 1.2rem;
+        }
+
+        .user-card {
+            background-color: #3c3836;
+            border-radius: 10px;
+            font-family: Poppins;
+            padding: 1rem;
+        }
+
+        .start-time-of-users {
+            color: #fb4934;
+            font-family: Poppins;
+            font-size: 1rem;
+        }
+        .all_users
+        {
+            margin: 2rem auto;
+        }
+    </style>
+</head>
+
+<body>
+    {% for message in messages %}
+
+    <div class="alert alert-success" id="message">
+        <span class="close" href="#" data-dismiss="alert" onclick="parentNode.remove()">
+            <i class="fa-solid fa-circle-xmark"></i>
+        </span>
+        {{ message }}
+    </div>
+
+    {% endfor %}
+    <div class="container">
+
+        <div class="left-board">
+            <p id="time-label">
+                You have so far taken -
+            </p>
+            <div id="timer">
+            </div>
+            <form action="/results/{{id}}/" method="POST" id="submit-grid-form">
+                {% csrf_token %}
+                <input type="text" name="values" id="values" value="1234567890" hidden>
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+
+        <div class="main-board" id="main-board">
+            {% for cell in cells %}
+            {% if cell.bottom_border and cell.right_border %}
+            {% if cell.value %}
+            <input maxlength="1" onkeypress="validate(event)" class="cell right-border bottom-border readonly"
+                name="{{forloop.counter1}}" value="{{cell.value}}" readonly>
+            {% else %}
+            <input maxlength="1" onkeypress="validate(event)" class="cell right-border bottom-border"
+                name="{{forloop.counter1}}">
+            {%endif%}
+            {% elif cell.bottom_border and not cell.right_border%}
+            {% if cell.value %}
+            <input maxlength="1" onkeypress="validate(event)" class="cell bottom-border readonly"
+                name="{{forloop.counter1}}" value="{{cell.value}}" readonly>
+            {% else %}
+            <input maxlength="1" onkeypress="validate(event)" class="cell bottom-border" name="{{forloop.counter1}}">
+            {%endif%}
+            {% elif cell.right_border and not cell.bottom_border%}
+            {% if cell.value %}
+            <input maxlength="1" onkeypress="validate(event)" class="cell right-border readonly"
+                name="{{forloop.counter1}}" value="{{cell.value}}" readonly>
+            {% else %}
+            <input maxlength="1" onkeypress="validate(event)" class="cell right-border" name="{{forloop.counter1}}">
+            {%endif%}
+            {% else %}
+            {% if cell.value %}
+            <input maxlength="1" onkeypress="validate(event)" class="cell readonly" name="{{forloop.counter1}}"
+                value="{{cell.value}}" readonly>
+            {% else %}
+            <input maxlength="1" onkeypress="validate(event)" class="cell" name="{{forloop.counter1}}">
+            {% endif %}
+            {% endif %}
+            {% endfor %}
+        </div>
+        <div class="right-board">
+            <h1 class="all-users">
+                All Users
+            </h1>
+            {% for user in users %}
+            <div class="user-card">
+                <div>
+                    <h3>
+                        <span class="username-of-users">
+                            {{user.0}}
+                        </span>
+                    </h3>
+                </div>
+                <div>
+                    <span class="start-time-of-users">
+                        Started at{{user.1}}
+                    </span>
+                </div>
+                <div>
+                    Time taken to finish <span class="time-taken-by-users">{{user.2|default_if_none:"*"}}</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        // update the value even when I am focus into a cell and I had platted in weeee.
+        cells = document.getElementsByClassName('cell');
+        Array.from(cells).forEach(cell => {
+            cell.addEventListener("focus", (event) => {
+                let cell = event.target;
+                let value = cell.value;
+                if (cell.value !== "") {
+                    Array.from(cells).forEach(cell_ => {
+                        if (cell_.value === value) {
+                            if (cell_ != cell) {
+                                cell_.classList.add("highlight")
+                            }
+                        }
+                    })
+                }
+            });
+            cell.addEventListener("focusout", (event) => {
+                Array.from(cells).forEach(cell => {
+                    cell.classList.remove("highlight");
+                })
+            })
+        })
+    </script>
+
+    <script>
+        function doDate() {
+            let start_time = "{{ start_time }}"; // get utc string of date from python
+            const start_time_js = new Date(start_time) // make a date obj with that utc string (Date function takes only the UTC time as input to create date, althouth when console logged it will represent it using local time)
+            const difference = new Date() - start_time_js; // difference of current time and start_time
+            const diff_as_date = new Date(difference); // make a datetime obj of the diff as dates (internally difference in utc but when console logged it will be offsetted by local offset)
+            const hours_unlocalised = diff_as_date.getUTCHours() // obtain the hidden utc difference of hours
+            const mins_unlocalised = diff_as_date.getUTCMinutes() // same for minutes 
+            const secs_unlocalised = diff_as_date.getUTCSeconds() // and seconds
+            let timer = document.getElementById('timer')
+            timer.innerHTML = `${hours_unlocalised} hrs, ${mins_unlocalised} mins, ${secs_unlocalised} secs `;
+        }
+        setInterval(doDate, 1000);
+        function usersInfo()
+        {
+            let name = "{{user.1}}";
+            let start = "{{user.2}}";
+            let taken = "{{user.3}}";
+            let card = document.createElement("span")
+        }
+    </script>
+
+
+    <script>
+        let form = document.getElementById("submit-grid-form");
+
+        form.addEventListener("submit", () => {
+            let values_input = document.getElementById("values");
+            let main_board = document.getElementById("main-board");
+            childs = Array.from(main_board.children);
+            let values = "";
+            childs.forEach(cell => {
+                if (cell.value !== "") {
+                    value = cell.value;
+                    values += value;
+                }
+                else {
+                    values += "0"
+                }
+            });
+            values_input.value = String(values);
+            return true;
+        })
+    </script>
+    <script>
+        function validate(evt) {
+            var theEvent = evt || window.event;
+
+            // Handle paste
+            if (theEvent.type === 'paste') {
+                key = event.clipboardData.getData('text/plain');
+            } else {
+                // Handle key press
+                var key = theEvent.keyCode || theEvent.which;
+                key = String.fromCharCode(key);
+            }
+            var regex = /[0-9]|\./;
+            if (!regex.test(key)) {
+                theEvent.returnValue = false;
+                if (theEvent.preventDefault) theEvent.preventDefault();
+            }
+        }
+    </script>
+    <script>
+        let cells = document.getElementsByClassName('cell');
+        Array.from(cells).forEach(cell => {
+            cell.addEventListener("focus", (event) => {
+                let cell = event.target;
+                let value = cell.value;
+                if (cell.value !== "") {
+                    Array.from(cells).forEach(cell_ => {
+                        if (cell_.value === value) {
+                            if (cell_ != cell) {
+                                cell_.classList.add("highlight")
+                            }
+                        }
+                    })
+                }
+            });
+            cell.addEventListener("focusout", (event) => {
+                Array.from(cells).forEach(cell => {
+                    cell.classList.remove("highlight");
+                })
+            })
+        })
+
+    </script>
+
+    <script>
+        // always put the cursor at the very end of the input when selected a cell
+        Array.from(cells).forEach(cell => {
+            cell.addEventListener("click", (event) => {
+                setTimeout(() => {
+                    const { scrollWidth, value: { length } } = cell;
+                    cell.setSelectionRange(length, length);
+                    cell.scrollLeft = scrollWidth;
+                }, 0);
+            });
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSSudoku</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
+
+        h1,
+        h2,
+        p,
+        li,
+        label {
+            font-family: Poppins;
+        }
+
+        body {
+            background-color: #282828;
+            color: #ebdbb2;
+            max-width: 1500px;
+            margin: 0 auto;
+        }
+
+        .button,
+        input[type="submit"] {
+            padding: 0.5rem 1.5rem;
+            background-color: #b16286;
+            border: 2px;
+            color: white;
+            font-family: Poppins;
+            font-size: 1rem;
+            border-radius: 25px;
+        }
+
+        input[type="number"] {
+            margin: 0 1rem;
+        }
+
+        input {
+            padding: 0.6rem 1.2rem;
+            font-size: 1rem;
+            border-radius: 25px;
+            font-family: Poppins;
+            color: #8ec07c;
+            background-color: #212121;
+        }
+
+        .actions {
+            display: grid;
+
+            align-items: center;
+            width: 1500px;
+            margin: 2rem auto;
+        }
+
+        .main {
+            display: flex;
+        }
+
+        label {
+            color: #8ec07c;
+            font-weight: bold;
+        }
+
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            margin: 0;
+        }
+
+        .rules {
+            margin-left: 3rem;
+        }
+
+        li {
+            margin: 1rem;
+        }
+        .username, .rules-header
+        {
+            color: #fe8019;
+        }
+        .or
+        {
+            color: #b8bb26;
+        }
+
+    </style>
+</head>
+
+
+<body>
+    <h1 class="username">
+        hello {{ user.username }}
+    </h1>
+    <div class="main">
+        <div class="actions">
+            <form action="/create-game" method="GET">
+                <div class="new">
+                    <h1>
+                        Create a new game
+                    </h1>
+                    <div class="buckets">
+                        <label for="N">Number of empty buckets:</label>
+                        <input type="number" name="K" min="15" , max="64" value="15">
+                        <p>
+                            The number of empty buckets decides the difficulty of the game. It can be anything between
+                            15
+                            and
+                            64.
+                        </p>
+                        <p>
+                            You will get an board id which you can share with your friends. They can join the same game
+                            by
+                            entering the board id.
+                        </p>
+                    </div>
+                    <input class="button" type="submit" value="Create Board">
+                </div>
+            </form>
+            <h1 class="or">
+                OR
+            </h1>
+            <form action="/join-game/" method="GET">
+                <div class="join">
+                    <h1>
+                        Join an existing game
+                    </h1>
+                    <div class="input-group">
+                        <label for="id">Board ID</label>
+                        <input type="number" name="id" id="id">
+                    </div>
+                    <input type="submit" value="Join">
+                    <p>
+                        Every plater will have their individual timers which starts as soon as they create/join a game.
+                    </p>
+                </div>
+            </form>
+        </div>
+        <div class="rules">
+            <ul>
+                <h2 class="rules-header">Sudoku Rules</h2>
+                <li>
+                    There are 81 total buckets in a grid of 9X9. You have to fill in integers between 1 and 9 (both
+                    inclusive)
+                </li>
+                <li>
+                    Numbers in a particular row or column cannot be repeated
+                </li>
+                <li>
+                    there are subgrid of size 3X3 within the main grid of 9X9. Any number within a particular subgrid
+                    cannot be repeated.
+                </li>
+            </ul>
+        </div>
+    </div>
+</body>
+
+</html>
