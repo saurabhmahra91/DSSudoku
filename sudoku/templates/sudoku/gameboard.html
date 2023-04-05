@@ -35,14 +35,14 @@
         }
 
         .main-board {
-            height: 700px;
-            width: 700px;
+
+            aspect-ratio: 1/1;
             display: grid;
             grid-template-columns: repeat(9, 1fr);
             margin: 0 auto 0 auto;
         }
 
-        input[type="submit"] {
+        input[type="submit"], button {
             padding: 0.5rem 1.5rem;
             background-color: #b16286;
             border: 2px;
@@ -50,6 +50,7 @@
             font-family: Poppins;
             font-size: 1rem;
             border-radius: 25px;
+            margin: .5rem auto;
         }
 
 
@@ -80,12 +81,14 @@
 
         .container {
             display: grid;
-            grid-template-columns: 1fr 5fr 1fr;
-            gap: 1rem;
+            grid-template-columns: 3fr 9fr 6fr;
+            gap: .5rem;
             padding-top: 2rem;
         }
 
-        #timer {
+        #hours,
+        #minutes,
+        #seconds {
             font-family: 'Poppins';
             font-size: 2rem;
             color: #fb4934;
@@ -93,7 +96,7 @@
 
         #time-label {
             font-family: Poppins;
-            font-size: .8rem;
+            font-size: 2rem;
         }
 
         .right-border {
@@ -110,11 +113,11 @@
 
         .alert {
             font-family: Poppins;
-            background-color: #98971a;
-            padding: 1rem 2rem;
+            background-color: #3c3836;
+            padding: 1rem;
             margin: 1rem auto;
-            color: #1d2021;
-            border-radius: 45px;
+            color: #ebdbb2;
+            border-radius: 9px;
         }
 
         .close {
@@ -132,7 +135,7 @@
         }
 
         .username-of-users {
-            color: #83a598;
+            color: #fe8019;
             font-family: Poppins;
             font-size: 1.2rem;
         }
@@ -149,8 +152,8 @@
             font-family: Poppins;
             font-size: 1rem;
         }
-        .all_users
-        {
+
+        .all_users {
             margin: 2rem auto;
         }
     </style>
@@ -171,15 +174,19 @@
 
         <div class="left-board">
             <p id="time-label">
-                You have so far taken -
+                <i class="fa-solid fa-clock"></i>
             </p>
-            <div id="timer">
+            <div>
+                <div id="hours"></div>
+                <div id="minutes"></div>
+                <div id="seconds"></div>
             </div>
             <form action="/results/{{id}}/" method="POST" id="submit-grid-form">
                 {% csrf_token %}
                 <input type="text" name="values" id="values" value="1234567890" hidden>
                 <input type="submit" value="Submit">
             </form>
+            <button>Restore Board </button>
         </div>
 
         <div class="main-board" id="main-board">
@@ -220,22 +227,25 @@
             <h1 class="all-users">
                 All Users
             </h1>
-            {% for user in users %}
+            {% for user_info in users_info %}
             <div class="user-card">
                 <div>
                     <h3>
                         <span class="username-of-users">
-                            {{user.0}}
+                            {{user_info.0}}
                         </span>
                     </h3>
                 </div>
-                <div>
+                <div>Started at -
                     <span class="start-time-of-users">
-                        Started at{{user.1}}
+                        {{user_info.1}}
                     </span>
                 </div>
                 <div>
-                    Time taken to finish <span class="time-taken-by-users">{{user.2|default_if_none:"*"}}</span>
+                    Time taken to finish -
+                    <span class="time-taken-by-users">
+                        {{user_info.2}}
+                    </span>
                 </div>
             </div>
             {% endfor %}
@@ -276,12 +286,15 @@
             const hours_unlocalised = diff_as_date.getUTCHours() // obtain the hidden utc difference of hours
             const mins_unlocalised = diff_as_date.getUTCMinutes() // same for minutes 
             const secs_unlocalised = diff_as_date.getUTCSeconds() // and seconds
-            let timer = document.getElementById('timer')
-            timer.innerHTML = `${hours_unlocalised} hrs, ${mins_unlocalised} mins, ${secs_unlocalised} secs `;
+            let hours = document.getElementById('hours')
+            let minutes = document.getElementById('minutes')
+            let seconds = document.getElementById('seconds')
+            hours.innerHTML = `${hours_unlocalised} hrs`;
+            minutes.innerHTML = `${mins_unlocalised} mins`;
+            seconds.innerHTML = `${secs_unlocalised} secs`;
         }
         setInterval(doDate, 1000);
-        function usersInfo()
-        {
+        function usersInfo() {
             let name = "{{user.1}}";
             let start = "{{user.2}}";
             let taken = "{{user.3}}";

@@ -1,3 +1,5 @@
+from django.template.defaulttags import register
+from datetime import datetime
 import random
 import math
 
@@ -107,19 +109,19 @@ class Sudoku:
         return [cell for row in self.mat for cell in row]
 
 
-
 def makeMatrix(string_array):
     char_array = list(string_array)
     array = list(map(int, char_array))
 
     mtx = []
-    
+
     for i in range(9):
         row = []
         for j in range(9):
             row.append(array[9*i+j])
         mtx.append(row)
     return mtx
+
 
 def isValidSudoku(array):
     mtx = makeMatrix(array)
@@ -148,35 +150,35 @@ def isValidSudoku(array):
             filled.append(mtx[i][j])
     if set(filled) != possiblities:
         return False
-    
+
     filled = []
     for i in range(3):
         for j in range(3, 6):
             filled.append(mtx[i][j])
     if set(filled) != possiblities:
         return False
-    
+
     filled = []
     for i in range(3):
         for j in range(6, 9):
             filled.append(mtx[i][j])
     if set(filled) != possiblities:
         return False
-    
+
     filled = []
     for i in range(3, 6):
         for j in range(3):
             filled.append(mtx[i][j])
     if set(filled) != possiblities:
         return False
-    
+
     filled = []
     for i in range(3, 6):
         for j in range(3, 6):
             filled.append(mtx[i][j])
     if set(filled) != possiblities:
         return False
-    
+
     filled = []
     for i in range(3, 6):
         for j in range(6, 9):
@@ -190,21 +192,21 @@ def isValidSudoku(array):
             filled.append(mtx[i][j])
     if set(filled) != possiblities:
         return False
-    
+
     filled = []
     for i in range(6, 9):
         for j in range(3, 6):
             filled.append(mtx[i][j])
     if set(filled) != possiblities:
         return False
-    
+
     filled = []
     for i in range(6, 9):
         for j in range(6, 9):
             filled.append(mtx[i][j])
     if set(filled) != possiblities:
         return False
-    
+
     print("subgrid check success")
     return True
 
@@ -220,8 +222,26 @@ def isOriginalSudoku(values, cells):
         print("expected=", cell.value)
         if cell.value is not None and str(cell.value) != filled_value.strip():
             return False
-    
+
     return True
+
+# def UTC_to_local(utc_datetime):
+#     now_timestamp = time.time()
+#     offset = datetime.fromtimestamp(now_timestamp) - datetime.utcfromtimestamp(now_timestamp)
+#     return utc_datetime + offset
+
+
+print(datetime.now())
+
+
+def UTC_to_local(utc_date):
+    offset = datetime.now() - datetime.utcnow()
+    return (utc_date+offset)
+
+
+@register.filter
+def get_item(dictionary, key):
+    return dictionary.get(key)
 
 
 # N = 9

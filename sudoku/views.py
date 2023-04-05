@@ -6,7 +6,7 @@ from .forms import LoginForm, SigninForm
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login as login_user, authenticate
 from django.shortcuts import get_object_or_404
-from .library import Sudoku, isValidSudoku, isOriginalSudoku
+from .library import Sudoku, isValidSudoku, isOriginalSudoku, UTC_to_local
 from django.contrib import messages
 from datetime import datetime
 from DSSudoku.settings import TIME_ZONE
@@ -77,9 +77,10 @@ def results(request, id):
         if len(values) < 81:
             messages.error(request, "Complete all the entries first!!")
             return redirect(f'/board/{id}')
-            
+
         if not isValidSudoku(values):
-            messages.error(request, "The sudoku does not meet the rules criteria")
+            messages.error(
+                request, "The sudoku does not meet the rules criteria")
             return redirect(f'/board/{id}')
 
         time_obj = Time.objects.filter(
@@ -98,7 +99,7 @@ def results(request, id):
             hours, remainder = divmod(td.seconds, 3600)
             minutes, seconds = divmod(remainder, 60)
             time_taken[user.username] = f"{hours} hours, {minutes} minutes, and {seconds} seconds"
-        return render(request, 'sudoku/results.html', {'time_taken': time_taken.items()})
+        return render(request, 'sudoku/results.html', {'time_taken': time_taken.items(), 'creation_time': UTC_to_local(time_obj.start_time).strftime("%Y-%m-%d %H:%M:%S")})
     else:
         return redirect(f'/board/{id}')
 
@@ -111,9 +112,17 @@ def board(request, id):
     user_details = []
     for user in users:
         time = Time.objects.filter(user=user, sudoku_game=game).first()
-        time_started = time.start_time 
         time_taken = time.time_taken
-        user_details.append([user.username, time_started.isoformat(), time_taken])
+        # user_info = {
+        #     'username': user.username,
+        #     # 'hour_started': UTC_to_local(time.start_time).hour,
+        #     # 'minute_started': UTC_to_local(time.start_time).minute,
+        #     # 'second_started': UTC_to_local(time.start_time).second,
+        #     'time_taken': str(time_taken),
+        # }
+        user_info = (user.username, UTC_to_local(time.start_time).strftime(
+            "%Y-%m-%d %H:%M:%S"), str(time.time_taken))
+        user_details.append(user_info)
     return render(
         request,
         "sudoku/gameboard.html",
@@ -121,7 +130,7 @@ def board(request, id):
             "cells": game.cell_set.all(),
             'id': game.id,
             'start_time': time_obj.start_time.isoformat(),
-            'users' : user_details,
+            'users_info': user_details,
         })
 
 
@@ -150,6 +159,7 @@ def create_game(request):
             cell.save()
     game.save()
     return redirect(f'/board/{game.id}')
+
 
 @login_required
 def join_game(request):
