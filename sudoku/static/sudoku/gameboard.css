@@ -1,0 +1,193 @@
+.main-board {
+
+    aspect-ratio: 1/1;
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    margin: 0 auto 0 auto;
+}
+
+input[type="submit"],
+button {
+    padding: 0.5rem 1.5rem;
+    background-color: var(--purple);
+    border: 2px;
+    color: white;
+    font-family: Poppins;
+    font-size: 1rem;
+    border-radius: 25px;
+    margin: .5rem auto;
+    cursor: pointer;
+}
+
+.cell:focus,
+.cell:hover {
+    background-color: var(--orange);
+}
+
+
+
+.container {
+    display: grid;
+    grid-template-columns: 1fr;
+
+}
+
+#hours,
+#minutes,
+#seconds {
+    font-family: 'Poppins';
+    font-size: 2rem;
+    color: #fb4934;
+    display: inline-block;
+}
+
+#time-label {
+    display: inline-block;
+    font-family: Poppins;
+    font-size: 2rem;
+    margin-right: 1rem;
+}
+
+.time-container {
+    display: flex;
+}
+
+@media screen and (min-width:1500px) {
+    .container {
+        grid-template-columns: 3fr 9fr 6fr;
+        gap: .5rem;
+        padding-top: 2rem;
+    }
+
+    .right-board {
+        margin-left: 1rem;
+    }
+
+    #hours,
+    #minutes,
+    #seconds {
+        display: block;
+    }
+
+
+}
+
+
+
+
+
+
+.alert {
+    font-family: Poppins;
+    background-color: #3c3836;
+    padding: 1rem;
+    margin: 1rem auto;
+    color: #ebdbb2;
+    border-radius: 9px;
+}
+
+.close {
+    color: #cc241d;
+    font-size: 1rem;
+    padding-right: .5rem;
+}
+
+#message {
+    display: block;
+}
+
+.disabled {
+    display: none;
+}
+
+.username-of-users {
+    color: #fe8019;
+    font-family: Poppins;
+    font-size: 1.2rem;
+}
+
+.user-card {
+    background-color: #3c3836;
+    border-radius: 10px;
+    font-family: Poppins;
+    padding: 1rem;
+    margin: 1rem auto;
+}
+
+.start-time-of-users {
+    color: #fb4934;
+    font-family: Poppins;
+    font-size: 1rem;
+}
+
+.all_users {
+    margin: 2rem auto;
+}
+
+.board-id {
+    font-family: Poppins;
+    font-size: 2.2rem;
+    color: #fe8019;
+}
+
+
+
+.cell {
+    padding: 9px;
+    height: 15px;
+    width: 15px;
+    border-radius: 100px;
+    margin: 2px;
+    text-align: center;
+    caret-color: transparent;
+    cursor: pointer;
+    border: none;
+    transition: .3s ease;
+    background-color:var(--cell-bg);
+    color: var(--fg);
+    font-family: Poppins;
+}
+
+.readonly {
+    color: #282828;
+}
+
+.highlight {
+    background-color: #d5c4a1;
+}
+
+
+@media screen and (min-width:500px) {
+    .cell {
+        padding: 11px;
+        height: 19px;
+        width: 19px;
+        margin: 0;
+    }
+
+    .right-border {
+        margin-right: 15px;
+    }
+
+    .bottom-border {
+        margin-right: 15px;
+    }
+}
+
+@media screen and (min-width:900px) {
+    .cell {
+        font-size: x-large;
+        padding: 23px;
+        height: 19px;
+        width: 19px;
+        margin: 0px;
+    }
+
+    .right-border {
+        margin-right: 22px;
+    }
+
+    .bottom-border {
+        margin-bottom: 22px;
+    }
+}

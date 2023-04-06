@@ -1,0 +1,156 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
+
+h1,
+h2,
+p,
+li,
+label {
+    font-family: Poppins;
+}
+
+body {
+    background-color: #282828;
+    color: #ebdbb2;
+    max-width: 1500px;
+    margin: 0 auto;
+}
+
+.button,
+button,
+input[type="submit"] {
+    padding: 0.5rem 1.5rem;
+    background-color: #b16286;
+    border: 2px;
+    color: white;
+    font-family: Poppins;
+    font-size: 1rem;
+    border-radius: 25px;
+    cursor: pointer;
+}
+
+.button {
+    margin-right: .5rem;
+    text-decoration: none;
+}
+
+.level-buttons {
+    margin: 1rem auto;
+}
+
+.level-buttons .button:focus
+{
+    background-color: var(--green);
+    
+}
+
+input[type="number"] {
+    margin: 0 1rem;
+}
+
+input {
+    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
+    border-radius: 25px;
+    font-family: Poppins;
+    color: #8ec07c;
+    background-color: #212121;
+}
+
+.actions {
+    display: grid;
+
+    align-items: center;
+}
+
+
+.main {
+    display: grid;
+    grid-template-columns: 1fr;
+    margin-top: 2rem;
+}
+
+@media screen and (min-width:1000px) {
+
+    .main {
+        grid-template-columns: 5fr 4fr;
+    }
+
+    .rules {
+        margin-left: 3rem;
+    }
+}
+
+label {
+    color: #8ec07c;
+    font-weight: bold;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0;
+}
+
+
+li {
+    margin: 1rem;
+}
+
+
+.rules-header {
+    color: #fe8019;
+}
+
+.or {
+    color: #fe8019;
+    margin-top: 2rem;
+    ;
+}
+
+.alert {
+    font-family: Poppins;
+    background-color: #3c3836;
+    padding: 1rem;
+    margin: 1rem auto;
+    color: #ebdbb2;
+    border-radius: 9px;
+}
+
+.close {
+    color: #cc241d;
+    font-size: 1rem;
+    padding-right: .5rem;
+}
+
+#message {
+    display: block;
+}
+
+.join {
+    margin: 2rem 0;
+}
+
+.join h1 {
+    margin: 1rem 0;
+}
+
+.instructions h1 {
+    margin: 2rem 0;
+}
+
+.instructions p {
+    margin: 1rem 0;
+}
+
+.username {
+    color: var(--green);
+}
+
+.input-group, .buckets {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    max-width: 370px;
+}

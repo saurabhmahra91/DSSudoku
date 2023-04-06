@@ -1,0 +1,122 @@
+
+input {
+    padding: 0.4rem 1.2rem;
+    font-size: 1rem;
+    border-radius: 25px;
+    font-family: Poppins;
+    color: #8ec07c;
+    background-color: #212121;
+    padding-left: 1rem;
+}
+
+.submit-container {
+    font-family: 'Poppins';
+    text-transform: capitalize;
+    padding: 0.5rem 1.2rem;
+    border-radius: 37px;
+    color: #fbf1c7;
+}
+
+
+input[type="submit"] {
+    all: unset;
+    /* color: transparent;
+    box-shadow: none; */
+}
+
+.submit-container {
+    background-color: #b16286;
+    font-size: 1rem;
+    font-family: Poppins;
+    border-radius: 50px;
+    border: none;
+    color: #fbf1c7;
+    padding: 0.5rem 1.2rem;
+    margin: 1rem 0;
+    cursor: pointer;
+}
+
+
+
+.form {
+    grid-template-columns: 1fr;
+    /* margin-top: 2rem; */
+}
+
+.form-container {
+    padding: 1rem 0;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.helptext {
+    font-family: Poppins;
+    grid-column-start: 1;
+    grid-column-end: span 2;
+    color: var(--green);
+    margin: 1rem 0;
+    font-size: x-small;
+}
+
+@media screen and (min-width:1080px) {
+    #form-container2 {
+        border-left: 2px solid #ebdbb2;
+        margin-left: 2rem;
+        padding-left: 2rem;
+        border-left: 2px solid #ebdbb2;
+    }
+
+    .form {
+        margin: auto;
+        margin-top: 2rem;
+        display: grid;
+        grid-template-columns: 2fr 3fr;
+        max-width: 1200px;
+    }
+    .helptext
+    {
+        font-size: small;
+    }
+}
+
+
+.close {
+    color: #cc241d;
+    font-size: 1rem;
+    padding-right: .5rem;
+}
+
+#message {
+    display: block;
+}
+
+.alert {
+    font-family: Poppins;
+    background-color: #3c3836;
+    padding: 1rem;
+    margin: 1rem auto;
+    color: #ebdbb2;
+    border-radius: 9px;
+}
+
+
+
+.helptext li {
+    list-style: none;
+}
+
+.signin-form {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 5px;
+    align-items: center;
+
+}
+
+.login-form {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 5px;
+    align-items: center;
+
+}

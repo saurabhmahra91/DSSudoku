@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,218 +7,77 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css"
-        href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.1/css/fontawesome.min.css"
-        integrity="sha384-QYIZto+st3yW+o8+5OHfT6S482Zsvz2WfOzpFSXMF9zqeLcFV0/wlZpMtyFcZALm" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.1/css/fontawesome.min.css" integrity="sha384-QYIZto+st3yW+o8+5OHfT6S482Zsvz2WfOzpFSXMF9zqeLcFV0/wlZpMtyFcZALm" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/912ee017a6.js" crossorigin="anonymous"></script>
     <title>DSSudoku</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
-
-        * {
-            margin: 0;
-            padding: 0;
-        }
-
-
-        h1,
-        h2,
-        p,
-        li,
-        label {
-            font-family: Poppins;
-        }
-
-        body {
-            background-color: #282828;
-            color: #ebdbb2;
-            max-width: 1500px;
-            margin: 0 auto;
-        }
-
-        .main-board {
-
-            aspect-ratio: 1/1;
-            display: grid;
-            grid-template-columns: repeat(9, 1fr);
-            margin: 0 auto 0 auto;
-        }
-
-        input[type="submit"], button {
-            padding: 0.5rem 1.5rem;
-            background-color: #b16286;
-            border: 2px;
-            color: white;
-            font-family: Poppins;
-            font-size: 1rem;
-            border-radius: 25px;
-            margin: .5rem auto;
-        }
-
-
-        .cell {
-            width: 1rem;
-            height: 1rem;
-            background-color: #928374;
-            color: #fbf1c7;
-            margin: 0;
-            padding: 25px;
-            border-radius: 56px;
-            font-size: 2rem;
-            caret-color: transparent;
-            cursor: pointer;
-            border: none;
-            transition: .3s ease;
-            font-weight: bold;
-        }
-
-        .cell:focus,
-        .cell:hover {
-            background-color: #98971a;
-        }
-
-        .readonly {
-            color: #282828;
-        }
-
-        .container {
-            display: grid;
-            grid-template-columns: 3fr 9fr 6fr;
-            gap: .5rem;
-            padding-top: 2rem;
-        }
-
-        #hours,
-        #minutes,
-        #seconds {
-            font-family: 'Poppins';
-            font-size: 2rem;
-            color: #fb4934;
-        }
-
-        #time-label {
-            font-family: Poppins;
-            font-size: 2rem;
-        }
-
-        .right-border {
-            margin-right: 1.8rem;
-        }
-
-        .bottom-border {
-            margin-bottom: 1.8rem;
-        }
-
-        .highlight {
-            background-color: #d5c4a1;
-        }
-
-        .alert {
-            font-family: Poppins;
-            background-color: #3c3836;
-            padding: 1rem;
-            margin: 1rem auto;
-            color: #ebdbb2;
-            border-radius: 9px;
-        }
-
-        .close {
-            color: #cc241d;
-            font-size: 1rem;
-            padding-right: .5rem;
-        }
-
-        #message {
-            display: block;
-        }
-
-        .disabled {
-            display: none;
-        }
-
-        .username-of-users {
-            color: #fe8019;
-            font-family: Poppins;
-            font-size: 1.2rem;
-        }
-
-        .user-card {
-            background-color: #3c3836;
-            border-radius: 10px;
-            font-family: Poppins;
-            padding: 1rem;
-        }
-
-        .start-time-of-users {
-            color: #fb4934;
-            font-family: Poppins;
-            font-size: 1rem;
-        }
-
-        .all_users {
-            margin: 2rem auto;
-        }
-    </style>
+    <link rel="stylesheet" href="{% static 'sudoku/style.css' %}">
+    <link rel="stylesheet" href="{% static 'sudoku/gameboard.css' %}">
 </head>
 
 <body>
+    <header>
+        <div class="logo">dssudoku</div>
+        <div>
+            <a href="/user-home">Home</a>
+            <a href="/gameboard">Play</a>
+            <a href="https://github.com/saurabhmahra91/saurabhmahra91">About</a>
+        </div>
+    </header>
     {% for message in messages %}
-
     <div class="alert alert-success" id="message">
         <span class="close" href="#" data-dismiss="alert" onclick="parentNode.remove()">
             <i class="fa-solid fa-circle-xmark"></i>
         </span>
         {{ message }}
     </div>
-
     {% endfor %}
     <div class="container">
 
         <div class="left-board">
-            <p id="time-label">
-                <i class="fa-solid fa-clock"></i>
-            </p>
-            <div>
-                <div id="hours"></div>
-                <div id="minutes"></div>
-                <div id="seconds"></div>
+            <div class="board-id">
+                Board ID: {{id}}
+            </div>
+            <div class="time-container">
+
+                <div id="time-label">
+                    <i class="fa-solid fa-clock"></i>
+                </div>
+                <div>
+                    <div id="hours"></div>
+                    <div id="minutes"></div>
+                    <div id="seconds"></div>
+                </div>
             </div>
             <form action="/results/{{id}}/" method="POST" id="submit-grid-form">
                 {% csrf_token %}
                 <input type="text" name="values" id="values" value="1234567890" hidden>
                 <input type="submit" value="Submit">
             </form>
-            <button>Restore Board </button>
         </div>
 
         <div class="main-board" id="main-board">
             {% for cell in cells %}
             {% if cell.bottom_border and cell.right_border %}
             {% if cell.value %}
-            <input maxlength="1" onkeypress="validate(event)" class="cell right-border bottom-border readonly"
-                name="{{forloop.counter1}}" value="{{cell.value}}" readonly>
+            <input maxlength="1" onkeypress="validate(event)" class="cell right-border bottom-border readonly" name="{{forloop.counter1}}" value="{{cell.value}}" readonly>
             {% else %}
-            <input maxlength="1" onkeypress="validate(event)" class="cell right-border bottom-border"
-                name="{{forloop.counter1}}">
+            <input maxlength="1" onkeypress="validate(event)" class="cell right-border bottom-border" name="{{forloop.counter1}}">
             {%endif%}
             {% elif cell.bottom_border and not cell.right_border%}
             {% if cell.value %}
-            <input maxlength="1" onkeypress="validate(event)" class="cell bottom-border readonly"
-                name="{{forloop.counter1}}" value="{{cell.value}}" readonly>
+            <input maxlength="1" onkeypress="validate(event)" class="cell bottom-border readonly" name="{{forloop.counter1}}" value="{{cell.value}}" readonly>
             {% else %}
             <input maxlength="1" onkeypress="validate(event)" class="cell bottom-border" name="{{forloop.counter1}}">
             {%endif%}
             {% elif cell.right_border and not cell.bottom_border%}
             {% if cell.value %}
-            <input maxlength="1" onkeypress="validate(event)" class="cell right-border readonly"
-                name="{{forloop.counter1}}" value="{{cell.value}}" readonly>
+            <input maxlength="1" onkeypress="validate(event)" class="cell right-border readonly" name="{{forloop.counter1}}" value="{{cell.value}}" readonly>
             {% else %}
             <input maxlength="1" onkeypress="validate(event)" class="cell right-border" name="{{forloop.counter1}}">
             {%endif%}
             {% else %}
             {% if cell.value %}
-            <input maxlength="1" onkeypress="validate(event)" class="cell readonly" name="{{forloop.counter1}}"
-                value="{{cell.value}}" readonly>
+            <input maxlength="1" onkeypress="validate(event)" class="cell readonly" name="{{forloop.counter1}}" value="{{cell.value}}" readonly>
             {% else %}
             <input maxlength="1" onkeypress="validate(event)" class="cell" name="{{forloop.counter1}}">
             {% endif %}
@@ -251,6 +112,7 @@
             {% endfor %}
         </div>
     </div>
+
 
     <script>
         // update the value even when I am focus into a cell and I had platted in weeee.
@@ -324,6 +186,7 @@
             return true;
         })
     </script>
+
     <script>
         function validate(evt) {
             var theEvent = evt || window.event;
@@ -343,6 +206,8 @@
             }
         }
     </script>
+
+
     <script>
         let cells = document.getElementsByClassName('cell');
         Array.from(cells).forEach(cell => {

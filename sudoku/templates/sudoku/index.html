@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,107 +7,75 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DSSudoku</title>
-    <link rel="stylesheet" type="text/css"
-        href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.1/css/fontawesome.min.css"
-        integrity="sha384-QYIZto+st3yW+o8+5OHfT6S482Zsvz2WfOzpFSXMF9zqeLcFV0/wlZpMtyFcZALm" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.1/css/fontawesome.min.css" integrity="sha384-QYIZto+st3yW+o8+5OHfT6S482Zsvz2WfOzpFSXMF9zqeLcFV0/wlZpMtyFcZALm" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/912ee017a6.js" crossorigin="anonymous"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
-
-        h1,
-        p,
-        li {
-            font-family: Poppins;
-        }
-
-        body {
-            background-color: #282828;
-            color: #ebdbb2;
-        }
-
-        input[type="text"],
-        input[type="password"] {
-            background-color: #212121;
-            font-size: 1.2rem;
-            font-family: Poppins;
-            border-radius: 20px;
-            color: #fbf1c7;
-            padding-left: 1rem;
-            border: 0.5px solid #458588
-        }
-
-        .submit-container {
-            font-family: 'Poppins';
-            text-transform: capitalize;
-            padding: 0.5rem 1.2rem;
-            border-radius: 37px;
-            color: #fbf1c7;
-        }
-
-        .form-container {
-            display: flex;
-            justify-content: flex-start;
-            align-items: flex-start;
-            flex-direction: column;
-            padding: 1rem 3rem ;
-        }
-
-        input[type="submit"] {
-            all: unset;
-            /* color: transparent;
-            box-shadow: none; */
-        }
-
-        .submit-container {
-            background-color: #212121;
-            font-size: 1.2rem;
-            font-family: Poppins;
-            border-radius: 50px;
-            color: #fbf1c7;
-            padding: .5rem 2rem;
-            margin: 1rem 0;
-            border: 0.5px solid #458588
-        }
-
-        .submit-container:hover {
-            background-color: #83a598;
-            transition: .3s ease;
-        }
-
-        .form {
-            display: flex;
-            justify-content: center;
-            padding: 3rem;
-        }
-
-        #form-container2 {
-            border-left: 2px solid #ebdbb2;
-        }
-    </style>
+    <link rel="stylesheet" href="{% static 'sudoku/style.css' %}">
+    <link rel="stylesheet" href="{% static 'sudoku/index.css' %}">
 </head>
 
 <body>
-    <div class="form" style="display: flex;">
+    <header>
+        <div class="logo">dssudoku</div>
+        <div>
+            <a href="/user-home">Home</a>
+            <a href="/gameboard">Play</a>
+            <a href="https://github.com/saurabhmahra91/saurabhmahra91">About</a>
+        </div>
+    </header>
+
+    {% for message in messages %}
+    <div class="alert alert-success" id="message">
+        <span class="close" href="#" data-dismiss="alert" onclick="parentNode.remove()">
+            <i class="fa-solid fa-circle-xmark"></i>
+        </span>
+        {{ message }}
+    </div>
+    {% endfor %}
+
+    <div class="form">
         <div class="form-container" id="form-container1">
             <h1>Login</h1>
             <form action="/login/" method="POST" autocomplete="off">
                 {% csrf_token %}
-                {{login_form.as_p}}
-                <span class="submit-container">
-                    <i class="fa-solid fa-user"></i>
-                    <input type="submit" value="submit">
-                </span>
+                <div class="login-form">
+                    <label for="{{ login_form.username.id_for_label }}">{{ login_form.username.label }}: </label>
+                    <input name="{{ login_form.username.html_name }}" type="text" minlength="6" id="{{ login_form.username.id_for_label }}" required>
+                    <label for="{{ login_form.password.id_for_label }}">{{ login_form.password.label }}: </label>
+                    <input name="{{ login_form.password.html_name }}" type="password" id="{{ login_form.password.id_for_label }}" required>
+                    <div>
+                        <button class="submit-container">
+                            <i class="fa-solid fa-user"></i>
+                            <input type="submit" value="submit">
+                        </button>
+                    </div>
+                </div>
             </form>
         </div>
         <div class="form-container" id="form-container2">
             <h1>Signup</h1>
             <form action="/register/" method="POST" autocomplete="off">
                 {% csrf_token %}
-                {{signin_form.as_p}}
-                <span class="submit-container">
-                    <i class="fa-solid fa-user-plus"></i>
-                    <input type="submit" value="submit">
-                </span>
+                <div class="signin-form">
+
+                    <label for="{{ signin_form.username.id_for_label }}">{{ signin_form.username.label }}: </label>
+                    <input name="{{ signin_form.username.html_name }}" type="text" minlength="6" id="{{ form.username.id_for_label }}" required>
+                    <label for="{{ signin_form.password1.id_for_label }}">{{ signin_form.password1.label }}: </label>
+                    <input name="{{ signin_form.password1.html_name }}" type="password" id="{{ form.password1.id_for_label }}" required>
+                    <div class="helptext">
+                        {{signin_form.password1.help_text}}
+                    </div>
+                    <label for="{{ signin_form.password2.id_for_label }}">{{ signin_form.password2.label }}: </label>
+                    <input name="{{ signin_form.password2.html_name }}" type="password" id="{{ form.password2.id_for_label }}" required>
+                    <div class="helptext">
+                        {{signin_form.password2.help_text}}
+                    </div>
+                    <div>
+                        <button class="submit-container">
+                            <i class="fa-solid fa-user-plus"></i>
+                            <input type="submit" value="submit">
+                        </button>
+                    </div>
+                </div>
             </form>
         </div>
     </div>

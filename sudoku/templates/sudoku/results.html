@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,76 +8,23 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DSSudoku</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
-
-        * {
-            margin: 0;
-            padding: 0;
-        }
-
-
-        h1,
-        h2,
-        p,
-        li,
-        label {
-            font-family: Poppins;
-        }
-
-        body {
-            background-color: #282828;
-            color: #ebdbb2;
-            max-width: 1500px;
-            margin: 0 auto;
-        }
-
-        .leaderboard {
-            color: #fe8019;
-            padding: 1rem 0;
-        }
-
-        li {
-            font-family: Poppins;
-            font-size: 1rem;
-        }
-
-        .user-card {
-            padding: 1rem 2.5rem;
-            border-radius: 5px;
-            font-family: Poppins;
-            font-size: 1.5rem;
-            display: flex;
-            align-items: center;
-        }
-
-        .rank {
-            font-weight: bold;
-            height: 80px;
-            width: 80px;
-            border-radius: 50px;
-            background-color: #b16286;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-        }
-
-        .user {
-            background-color: #3c3826;
-            padding: 1rem;
-            margin: 0 1rem;
-            border-radius: 6px;
-            flex: 1;
-        }
-
-        .time-taken {
-            color: #cc241d;
-        }
-    </style>
+    <link rel="stylesheet" href="{% static 'sudoku/style.css' %}">
+    <link rel="stylesheet" href="{% static 'sudoku/results.css' %}">
 </head>
 
 <body>
+    <header>
+        <div class="logo">dssudoku</div>
+        <div>
+            <a href="/user-home">Home</a>
+            {% if request.user.is_authenticated %}
+            <a href="/logout">Logout</a>
+            {% else %}
+            <a href="/index">Login</a>
+            {% endif %}
+            <a href="https://github.com/saurabhmahra91/saurabhmahra91">About</a>
+        </div>
+    </header>
     <div>
         <h1 class="leaderboard">Leaderboard</h1>
         {% for user, time in time_taken %}
