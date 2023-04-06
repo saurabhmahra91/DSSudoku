@@ -29,4 +29,5 @@ urlpatterns = [
     path('join-game/', views.join_game),
     path('board/<int:id>/', views.board),
     path('results/<int:id>/', views.results),
+    path('logout/', views.logout),
 ]
